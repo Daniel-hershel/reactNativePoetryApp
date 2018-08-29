@@ -131,7 +131,7 @@ componentDidMount(){
       <FlatList
           data={this.sendMedals(this.state.dataSource)}
           renderItem={({item}) => <TouchableHighlight style = {ScreenStyles.things} onPress={()=> this.whichSelected(item)}><Text>{item.name}</Text></TouchableHighlight>}
-          keyExtractor={(item, index) => item}
+          keyExtractor={(item, index) => index.toString()}
         />
       </View>
   

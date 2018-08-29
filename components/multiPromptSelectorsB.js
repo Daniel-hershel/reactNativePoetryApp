@@ -1,37 +1,26 @@
 // 0:a. Importat React from 'react' -- python style I think?
 import React, { Component } from 'react';
 
-
-
-import {PropTypes} from 'prop-types';
-// 0.b. Import the big three modules(?) from RNative from React 1. StyleSheet 2.Text 3.View--prolly more than three well maybe those are a big three
 import { 
   ActivityIndicator, Dimensions, FlatList, TouchableHighlight, ScrollView, StyleSheet, Text, Image, View 
 } from 'react-native';
 
-import {
-  createStackNavigator,
-} from 'react-navigation';
-
 import { Button } from 'react-native-elements'
-
-import {font} from 'expo'
-
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height   
 
-
-
-export  default class PromptSelectors extends React.Component {
+export default class MultiPromptSelectorA extends React.Component {
  // 1.i constructor for component
   constructor(props){
     super(props);
+      KeyWordTwo:'',
     this.state ={ 
       isLoading: true,
       text: '',
       totalText: "placeholder",
       URL: '',
+      URLTwo:'',
       KeyWord:'',
       Prompt: ''
 
@@ -41,9 +30,7 @@ export  default class PromptSelectors extends React.Component {
       
   };
 
-
-
-// For Text Input Update
+// For Text Input Update--is it needed here
 updateText(text){
   // console.log(this)
   this.setState({text:text})
@@ -57,49 +44,61 @@ whichSelected(thing){
 }
 
 // Load Data In Flatlist
-sendMedals(dataSource){
+sendForData(dataSource){
+    // return a random list of 25 things instead of alphabetical
     // console.log(dataSource)
-      let textHolder = []
+         let textHolder = []
  // Set the number of responses from API here
        for (var i =0; i-15;i++){
-        let temp = <Text>dataSource[i]</Text>
+        // let temp = <Text>dataSource[i]</Text>
         textHolder.push(dataSource[i])
       }
     return textHolder
+
   }
 
-componentDidMount(){
-  // Load data fpr API-reqiest/fetch
- // let URL = 'https://raw.githubusercontent.com/dariusk/corpora/master/data/archetypes/character.json'
-  // let KeyWord = 'sculpture materials'
-  // return fetch(URL)  
-  return fetch(this.props.URL)  
+  sendForDataTwo(dataSourceTwo){
+      // console.log(dataSource)
+      let textHolderTwo = []
+ // Set the number of responses from API here
+       for (var i =0; i-15;i++){
+        // let tempTwo = <Text>dataSourceTwo[i]</Text>
+        textHolderTwo.push(dataSourceTwo[i])
+      }
+    return textHolderTwo
+
+  }
+
+
+  loadDataOne(){
+    return fetch(this.props.URL)  
     .then((response) => response.json())
     .then((responseJson) => {
-        // console.log(responseJson['sculpture materials'])
-
-
+        console.log(responseJson['colors'])
         this.setState({
           isLoading: false,
           dataSource: responseJson[this.props.KeyWord],
           // URL:URL
         }, function(){
-        console.log(this.state)
+        // console.log(this.state)
       console.log(this.props)
-
-
-
-
-
         });
 
       })
       .catch((error) =>{
         console.error(error);
       });
+
   }
 
 
+
+componentDidMount(){
+
+this.loadDataOne()
+
+
+  }
 
 
   render(){
@@ -115,23 +114,21 @@ componentDidMount(){
     return(
 
  // Whole Container View
-      <View style={{flex: 1}}>
-
-      <View style={{flex: .5, height: 50, paddingTop:50}}>
-    <Text style = {{fontSize: 26}}> {this.props.Prompt}</Text>
-      </View>
-      <View style={{flex:.75, paddingTop:0, }}>
-      <Text style = {{fontSize:45}}> {this.state.text}</Text>
+      <View style={{flex: .5}}>
+        <View style={{paddingTop:0, }}>
+      <Text style = {{fontSize:45}}> {this.state.text} &</Text>
       </View>
 
-      <View style={{flex: 3, marginBottom:25, backgroundColor:"#fffff8"}}>
+      <View style={{ marginBottom:25, backgroundColor:"#fffff8"}}>
       
       <FlatList
-          data={this.sendMedals(this.state.dataSource)}
-          renderItem={({item}) => <TouchableHighlight style = {ScreenStyles.things} onPress={()=> this.whichSelected(item)}><Text>{item}</Text></TouchableHighlight>}
+          data={this.sendForData(this.state.dataSource)}
+          renderItem={({item}) => <TouchableHighlight style = {ScreenStyles.things} onPress={()=> this.whichSelected(item.color)}><Text>{item.color}</Text></TouchableHighlight>}
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
+
+ 
   
       </View>
 

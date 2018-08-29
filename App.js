@@ -19,6 +19,8 @@ import UselessTextInputMultiline from './components/TextInput.js';
 import TwoWayText from './components/TextInput.js';
 import PromptSelectors from './components/PromptSelectors.js';
 import PromptSelectorObjects from './components/PromptSelectorObjects.js';
+import MultiPromptSelectorsA from './components/multiPromptSelectorsA.js';
+import MultiPromptSelectorsB from './components/multiPromptSelectorsB.js';
    
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height   
@@ -34,7 +36,7 @@ export  class HomeScreen extends React.Component {
             buttonStyle = {styles.beginButton}
             title="Begin"
             
-            onPress={() => this.props.navigation.navigate('DoneBeing')}
+            onPress={() => this.props.navigation.navigate('Shedding')}
         />
 
      
@@ -43,32 +45,6 @@ export  class HomeScreen extends React.Component {
   }
 
 }
-
-export class DoneBeing extends React.Component {
-  render (){
-    return(
-// next: how can I pass the url and key work as props to the component to set it up for the specfic screen>
-      <View style = {{flex:1, alignItems:"center", justifyContent:"center"}}>
-  
-  <PromptSelectors
-     Prompt= 'I am done being the...'
-     KeyWord = 'characters'
-     URL = 'https://raw.githubusercontent.com/dariusk/corpora/master/data/archetypes/character.json'
-
-  > </PromptSelectors>
-         <Button
-            raised
-            large
-            buttonStyle = {styles.beginButton}
-            title="Next"
-            onPress={() => this.props.navigation.navigate('Shedding')}
-        />
-    </View>
-      )
-  }
-}
-
-//2. Create I Am Shedding Page
 
 export class Shedding extends React.Component {
   render (){
@@ -87,44 +63,88 @@ export class Shedding extends React.Component {
             large
             buttonStyle = {styles.beginButton}
             title="Next"
-            onPress={() => this.props.navigation.navigate('Fortifying')}
+            onPress={() => this.props.navigation.navigate('DoneBeing')}
         />
     </View>
       )
   }
 }
 
+export class DoneBeing extends React.Component {
+  render (){
+    return(
+// next: how can I pass the url and key work as props to the component to set it up for the specfic screen>
+      <View style = {{flex:1, alignItems:"center", justifyContent:"center"}}>
+  
+  <PromptSelectorObjects
+     Prompt= 'I am done being the...'
+     KeyWord = 'characters'
+     URL = 'https://raw.githubusercontent.com/dariusk/corpora/master/data/archetypes/character.json'
 
+  > </PromptSelectorObjects>
+         <Button
+            raised
+            large
+            buttonStyle = {styles.beginButton}
+            title="Next"
+            onPress={() => this.props.navigation.navigate('Becoming')}
+        />
+    </View>
+      )
+  }
+}
+
+// I have nurtured my
+// and gain strengthed from
 
 export class Becoming extends React.Component {
   render (){
     return(
       <View style = {{flex:1, alignItems:"center", justifyContent:"center"}}>
-
-  <PromptSelectors
+<View>
+      <View style={{marginBottom:50}}>
+    <Text style = {{fontSize: 26}}> I am Becoming</Text>
+      </View>
+    
+</View>
+      <View style = {{flex:1,  flexDirection: 'row', alignItems:"center", justifyContent:"center"}}>
+    <MultiPromptSelectorsB
      Prompt= 'I am becoming...'
-     KeyWord = 'sculpture materials'
-     URL = 'https://raw.githubusercontent.com/dariusk/corpora/master/data/materials/sculpture-materials.json'
-  > </PromptSelectors>
+     KeyWord = 'colors'
+     URL = 'https://raw.githubusercontent.com/dariusk/corpora/master/data/colors/crayola.json'
+  > </MultiPromptSelectorsB>
+  <MultiPromptSelectorsA
+     Prompt= 'I am becoming...'
+     KeyWord = 'genres'
+     URL = 'https://raw.githubusercontent.com/dariusk/corpora/master/data/music/genres.json'
+  > </MultiPromptSelectorsA>
+
+      </View>
+
+      <View style = {{}}>
+
          <Button
             raised
             large
             buttonStyle = {styles.beginButton}
             title="Next"
             
-            onPress={() => this.props.navigation.navigate('HomeScreen')}
+            onPress={() => this.props.navigation.navigate('Remaining')}
         />
+      </View>
       </View>
       )
   }
 
 }
-export class Remain extends React.Component {
+export class Remaining extends React.Component {
   render (){
     return(
 // next: how can I pass the url and key work as props to the component to set it up for the specfic screen>
       <View style = {{flex:1, alignItems:"center", justifyContent:"center"}}>
   <PromptSelectors
+  // I will always be
+  // I am __ | __
     Prompt= 'I am remaining...'
      KeyWord = 'sculpture materials'
      URL = 'https://raw.githubusercontent.com/dariusk/corpora/master/data/materials/sculpture-materials.json'
@@ -136,7 +156,7 @@ export class Remain extends React.Component {
             buttonStyle = {styles.beginButton}
             title="Next"
             
-            onPress={() => this.props.navigation.navigate('Becoming')}
+            onPress={() => this.props.navigation.navigate('Home')}
         />
         </View>
       )
@@ -149,9 +169,9 @@ export class Remain extends React.Component {
 const RootStack = createStackNavigator(
 {
   Home: HomeScreen,
-  DoneBeing: DoneBeing,
   Shedding: Shedding,
-  Fortifying: Remain,
+  DoneBeing: DoneBeing,
+  Remaining: Remaining,
   Becoming: Becoming
 },
 {
