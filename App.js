@@ -21,9 +21,34 @@ import PromptSelectors from './components/PromptSelectors.js';
 import PromptSelectorObjects from './components/PromptSelectorObjects.js';
 import MultiPromptSelectorsA from './components/multiPromptSelectorsA.js';
 import MultiPromptSelectorsB from './components/multiPromptSelectorsB.js';
+import AllTogether from './components/allTogether.js';
    
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height   
+export default class App extends React.Component {
+    constructor(props){
+    super(props);
+    this.state ={ 
+      responses: []
+
+    }
+  this.promptHandler = this.promptHandler.bind(this)
+  }
+
+promptHandler(e) {
+    e.preventDefault()
+    console.log(e)
+    this.setState({
+      responses:[...this.state.responses, newResponse]
+    })
+  console.log(responses)
+  }
+
+  render() {
+    return <RootStack />;
+  }
+}
+
 //1. Create Home Screem
 export  class HomeScreen extends React.Component {
   render(){
@@ -38,21 +63,36 @@ export  class HomeScreen extends React.Component {
             
             onPress={() => this.props.navigation.navigate('Shedding')}
         />
-
-     
       </View>
       )
   }
-
 }
 
 export class Shedding extends React.Component {
+      constructor(props){
+    super(props);
+    this.state ={ 
+      response:" "
+
+    }
+  // this.promptHandler = this.promptHandler.bind(this)
+  }
+
+  localPromptHandler= (e) => {
+  console.log(e)
+    // e.preventDefault()
+    this.setState({
+      response:e
+      // responses:[...this.state.responses, newResponse]
+    })
+  }
   render (){
     return(
 // next: how can I pass the url and key work as props to the component to set it up for the specfic screen>
       <View style = {{flex:1, alignItems:"center", justifyContent:"center"}}>
   
   <PromptSelectors
+     promptHandler = {this.localPromptHandler}
      Prompt= 'I am shedding...'
      KeyWord = 'sculpture materials'
      URL = 'https://raw.githubusercontent.com/dariusk/corpora/master/data/materials/sculpture-materials.json'
@@ -63,7 +103,10 @@ export class Shedding extends React.Component {
             large
             buttonStyle = {styles.beginButton}
             title="Next"
-            onPress={() => this.props.navigation.navigate('DoneBeing')}
+            onPress={() =>{
+             this.props.navigation.navigate('DoneBeing')
+             // this.props.promptHandler()
+           }}
         />
     </View>
       )
@@ -146,8 +189,8 @@ export class Remaining extends React.Component {
   // I will always be
   // I am __ | __
     Prompt= 'I am remaining...'
-     KeyWord = 'sculpture materials'
-     URL = 'https://raw.githubusercontent.com/dariusk/corpora/master/data/materials/sculpture-materials.json'
+     KeyWord = 'building materials'
+     URL = 'https://raw.githubusercontent.com/dariusk/corpora/master/data/materials/building-materials.json'
 
   > </PromptSelectors>
          <Button
@@ -156,13 +199,28 @@ export class Remaining extends React.Component {
             buttonStyle = {styles.beginButton}
             title="Next"
             
-            onPress={() => this.props.navigation.navigate('Home')}
+            onPress={() => this.props.navigation.navigate('AllTogetherNow')}
         />
         </View>
       )
   }
 
 }
+
+export class AllTogetherNow extends React.Component {
+  render(){
+    return(
+      <View style = {{flex:1, alignItems:"center", justifyContent:"center"}}>
+
+      <AllTogether> </AllTogether>
+</View>
+      )
+
+  }
+
+
+}
+
 // up next: add next buttons to other pages
 // change out for swipe--or add swipte mechanism
 
@@ -172,7 +230,8 @@ const RootStack = createStackNavigator(
   Shedding: Shedding,
   DoneBeing: DoneBeing,
   Remaining: Remaining,
-  Becoming: Becoming
+  Becoming: Becoming,
+  AllTogetherNow: AllTogetherNow
 },
 {
 initialRouteName:"Home"
@@ -180,11 +239,6 @@ initialRouteName:"Home"
 );
 
 
-export default class App extends React.Component {
-  render() {
-    return <RootStack />;
-  }
-}
 
 
 // on hold for 1.0 Input component

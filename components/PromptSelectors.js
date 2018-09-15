@@ -1,9 +1,6 @@
 // 0:a. Importat React from 'react' -- python style I think?
 import React, { Component } from 'react';
 
-
-
-import {PropTypes} from 'prop-types';
 // 0.b. Import the big three modules(?) from RNative from React 1. StyleSheet 2.Text 3.View--prolly more than three well maybe those are a big three
 import { 
   ActivityIndicator, Dimensions, FlatList, TouchableHighlight, ScrollView, StyleSheet, Text, Image, View 
@@ -37,7 +34,9 @@ export  default class PromptSelectors extends React.Component {
 
     }
   this.updateText = this.updateText.bind(this)
+  this.whichSelected = this.whichSelected.bind(this)
   this.componentDidMount = this.componentDidMount.bind(this)
+  this.localResponse = this.localResponse.bind(this)
       
   };
 
@@ -49,11 +48,18 @@ updateText(text){
   this.setState({text:text})
 }
 
+localResponse(selectedResponse){
+console.log(selectedResponse)
+this.props.promptHandler(selectedResponse)
+
+}
 
 // For which word is selected from FlatList
 whichSelected(thing){
-  console.log(thing)
+  console.log(this)
   this.setState({text:thing})
+  
+
 }
 
 // Load Data In Flatlist
@@ -84,8 +90,8 @@ componentDidMount(){
           dataSource: responseJson[this.props.KeyWord],
           // URL:URL
         }, function(){
-        console.log(this.state)
-      console.log(this.props)
+        // console.log(this.state)
+      // console.log(this.props)
 
 
 
@@ -128,7 +134,14 @@ componentDidMount(){
       
       <FlatList
           data={this.sendMedals(this.state.dataSource)}
-          renderItem={({item}) => <TouchableHighlight style = {ScreenStyles.things} onPress={()=> this.whichSelected(item)}><Text>{item}</Text></TouchableHighlight>}
+          renderItem={({item}) => <TouchableHighlight
+           style = {ScreenStyles.things} 
+           onPress={()=> {
+            
+            this.localResponse(item)
+            this.whichSelected(item)}
+
+          }><Text>{item}</Text></TouchableHighlight>}
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
